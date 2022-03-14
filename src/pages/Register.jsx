@@ -1,16 +1,38 @@
 import { useEffect, useState } from 'react'
-
+import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { FaUser } from 'react-icons/fa'
+import { reset, register } from '../features/auth/authSlice'
+import Spinner from '../components/Spinner'
 
 const Register = () => {
 	const [formData, setFormData] = useState({
+		username: '',
 		name: '',
 		email: '',
 		password: '',
 		password2: '',
 	})
 
-	const { name, email, password, password2 } = formData
+	const { name, email, password, password2, username } = formData
+
+	const navigate = useNavigate()
+	const dispatch = useDispatch()
+
+	const { user, isError, isLoading, isSuccess, message } = useSelector(state => state.auth)
+
+	useEffect(() => {
+		if (isError) {
+			toast.error(message)
+		}
+
+		if (isSuccess || user) {
+			navigate('/')
+		}
+
+		dispatch(reset())
+	}, [user, isError, isSuccess, message, navigate, dispatch])
 
 	const onChange = e => {
 		setFormData(prevState => ({
@@ -20,6 +42,23 @@ const Register = () => {
 	}
 	const onSubmit = e => {
 		e.preventDefault()
+
+		if (password !== password2) {
+			toast.error('password do not match!')
+		} else {
+			const userData = {
+				username,
+				name,
+				email,
+				password,
+			}
+
+			dispatch(register(userData))
+		}
+	}
+
+	if (isLoading) {
+		return <Spinner />
 	}
 
 	return (
@@ -35,6 +74,19 @@ const Register = () => {
 				<form onSubmit={onSubmit}>
 					<div className='form-group'>
 						<input
+							required
+							className='form-control'
+							type='text'
+							id='username'
+							name='username'
+							value={username}
+							placeholder='Enter your Username'
+							onChange={onChange}
+						/>
+					</div>
+					<div className='form-group'>
+						<input
+							required
 							className='form-control'
 							type='text'
 							id='name'
@@ -46,6 +98,7 @@ const Register = () => {
 					</div>
 					<div className='form-group'>
 						<input
+							required
 							className='form-control'
 							type='email'
 							id='email'
@@ -57,17 +110,19 @@ const Register = () => {
 					</div>
 					<div className='form-group'>
 						<input
+							required
 							className='form-control'
 							type='password'
 							id='password'
 							name='password'
 							value={password}
-							placeholder='Enter assword'
+							placeholder='Enter Password'
 							onChange={onChange}
 						/>
 					</div>
 					<div className='form-group'>
 						<input
+							required
 							className='form-control'
 							type='password'
 							id='password2'

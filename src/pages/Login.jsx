@@ -1,14 +1,35 @@
 import { useEffect, useState } from 'react'
-
+import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { reset, login } from '../features/auth/authSlice'
+import Spinner from '../components/Spinner'
 import { FaSignInAlt } from 'react-icons/fa'
 
 const Login = () => {
 	const [formData, setFormData] = useState({
-		email: '',
+		text: '',
 		password: '',
 	})
 
-	const { email, password } = formData
+	const { text, password } = formData
+
+	const dispatch = useDispatch()
+	const navigate = useNavigate()
+
+	const { user, isError, isLoading, isSuccess, message } = useSelector(state => state.auth)
+
+	useEffect(() => {
+		if (isError) {
+			toast.error(message)
+		}
+
+		if (isSuccess || user) {
+			navigate('/')
+		}
+
+		dispatch(reset())
+	}, [user, isError, isSuccess, message, navigate, dispatch])
 
 	const onChange = e => {
 		setFormData(prevState => ({
@@ -16,8 +37,24 @@ const Login = () => {
 			[e.target.name]: e.target.value,
 		}))
 	}
+
 	const onSubmit = e => {
 		e.preventDefault()
+
+		if (!text || !password) {
+			toast.error('please add all text fields')
+		} else {
+			const userData = {
+				text,
+				password,
+			}
+
+			dispatch(login(userData))
+		}
+	}
+
+	if (isLoading) {
+		return <Spinner />
 	}
 
 	return (
@@ -32,17 +69,19 @@ const Login = () => {
 				<form onSubmit={onSubmit}>
 					<div className='form-group'>
 						<input
+							required
 							className='form-control'
-							type='email'
-							id='email'
-							name='email'
-							value={email}
-							placeholder='Enter your Email'
+							type='text'
+							id='text'
+							name='text'
+							value={text}
+							placeholder='Enter your Username or Email.'
 							onChange={onChange}
 						/>
 					</div>
 					<div className='form-group'>
 						<input
+							required
 							className='form-control'
 							type='password'
 							id='password'
