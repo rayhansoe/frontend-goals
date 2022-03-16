@@ -4,6 +4,7 @@ import goalService from './goalService'
 // initial state
 const initialState = {
 	goals: [],
+	goal: null,
 	isError: false,
 	isSuccess: false,
 	isLoading: false,
@@ -29,6 +30,20 @@ export const getGoals = createAsyncThunk('goals/getAll', async (_, thunkAPI) => 
 	try {
 		const token = thunkAPI.getState().auth.token
 		return await goalService.getGoals(token)
+	} catch (error) {
+		const message =
+			(error.response && error.response.data && error.response.data.message) ||
+			error.message ||
+			error.toString()
+		return thunkAPI.rejectWithValue(message)
+	}
+})
+
+// Get Goal by ID
+export const getGoalById = createAsyncThunk('goals/getGoalById', async (id, thunkAPI) => {
+	try {
+		const token = thunkAPI.getState().auth.token
+		return await goalService.getGoalById(id, token)
 	} catch (error) {
 		const message =
 			(error.response && error.response.data && error.response.data.message) ||
@@ -79,6 +94,22 @@ export const goalSlice = createSlice({
 				state.isError = true
 				state.message = action.payload
 				console.log(action.payload)
+			})
+			// Get Goal by ID extras || Pending
+			.addCase(getGoals.pending, state => {
+				state.isLoading = true
+			})
+			// Get Goal by ID extras || Success
+			.addCase(getGoals.fulfilled, (state, action) => {
+				state.isLoading = false
+				state.isSuccess = true
+				state.goal = action.payload
+			})
+			// Get Goal by ID extras || Rejected
+			.addCase(getGoals.rejected, (state, action) => {
+				state.isLoading = false
+				state.isError = true
+				state.message = action.payload
 			})
 	},
 })
