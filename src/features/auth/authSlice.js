@@ -2,10 +2,11 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import authService from './authService'
 
 // Get User from LocalStorage
-const user = JSON.parse(localStorage.getItem('user'))
+const token = JSON.parse(localStorage.getItem('user'))
 
 const initialState = {
-	user: user ? user : null,
+	token: token ? token : null,
+	user: null,
 	isError: false,
 	isSuccess: false,
 	isLoading: false,
@@ -54,33 +55,42 @@ export const authSlice = createSlice({
 			state.isSuccess = false
 			state.message = ''
 		},
+		hardReset: state => initialState,
 	},
 	extraReducers: builder => {
 		builder
-			// Register extras
+			// Register extras || Pending
 			.addCase(register.pending, state => {
 				state.isLoading = true
 			})
+			// Register extras || Success
 			.addCase(register.fulfilled, (state, action) => {
+				const { token, userProfile } = action.payload
 				state.isLoading = false
 				state.isSuccess = true
-				state.user = action.payload
+				state.token = token
+				state.user = userProfile
 			})
+			// Register extras || Rejected
 			.addCase(register.rejected, (state, action) => {
 				state.isLoading = false
 				state.isError = true
 				state.message = action.payload
 				state.user = null
 			})
-			// Register extras
+			// Login extras || Pending
 			.addCase(login.pending, state => {
 				state.isLoading = true
 			})
+			// Login extras || Success
 			.addCase(login.fulfilled, (state, action) => {
+				const { token, userProfile } = action.payload
 				state.isLoading = false
 				state.isSuccess = true
-				state.user = action.payload
+				state.token = token
+				state.user = userProfile
 			})
+			// Login extras || Rejected
 			.addCase(login.rejected, (state, action) => {
 				state.isLoading = false
 				state.isError = true
@@ -89,10 +99,11 @@ export const authSlice = createSlice({
 			})
 			// Logout extra
 			.addCase(logout.fulfilled, state => {
+				state.token = null
 				state.user = null
 			})
 	},
 })
 
-export const { reset } = authSlice.actions
+export const { reset, hardReset } = authSlice.actions
 export default authSlice.reducer

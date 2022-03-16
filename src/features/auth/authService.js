@@ -8,7 +8,8 @@ const register = async userData => {
 	const response = await axios.post(USER_API, userData)
 
 	if (response.data) {
-		localStorage.setItem('user', JSON.stringify(response.data))
+		const { token } = response.data
+		localStorage.setItem('user', JSON.stringify({ token }))
 	}
 
 	return response.data
@@ -19,7 +20,8 @@ const login = async userData => {
 	const response = await axios.post(USER_API + 'login', userData)
 
 	if (response.data) {
-		localStorage.setItem('user', JSON.stringify(response.data))
+		const { token } = response.data
+		localStorage.setItem('user', JSON.stringify({ token }))
 	}
 
 	return response.data
