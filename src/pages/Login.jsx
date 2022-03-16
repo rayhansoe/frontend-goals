@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import { reset, login } from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
 import { FaSignInAlt } from 'react-icons/fa'
+import { reset as resetUser } from '../features/users/userSlice'
 
 const Login = () => {
 	const [formData, setFormData] = useState({
@@ -29,6 +30,7 @@ const Login = () => {
 		}
 
 		dispatch(reset())
+		dispatch(resetUser())
 	}, [user, isError, isSuccess, message, navigate, dispatch])
 
 	const onChange = e => {
