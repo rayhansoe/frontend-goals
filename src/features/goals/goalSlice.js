@@ -24,6 +24,20 @@ export const createGoal = createAsyncThunk('goals/create', async (goalData, thun
 	}
 })
 
+// Get All Goals
+export const getGoals = createAsyncThunk('goals/getAll', async (_, thunkAPI) => {
+	try {
+		const token = thunkAPI.getState().auth.token
+		return await goalService.getGoals(token)
+	} catch (error) {
+		const message =
+			(error.response && error.response.data && error.response.data.message) ||
+			error.message ||
+			error.toString()
+		return thunkAPI.rejectWithValue(message)
+	}
+})
+
 // Goal Slice
 export const goalSlice = createSlice({
 	name: 'goal',
