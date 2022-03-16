@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import GoalForm from '../components/GoalForm'
 import { reset } from '../features/users/userSlice'
 
 const Dashboard = () => {
@@ -24,7 +25,10 @@ const Dashboard = () => {
 				<h1>
 					Welcome <Link to={`/${user && user.username}`}>{user && user.name}</Link>
 				</h1>
+				<p>Goals Dashboard</p>
 			</section>
+
+			<GoalForm />
 		</>
 	)
 }
