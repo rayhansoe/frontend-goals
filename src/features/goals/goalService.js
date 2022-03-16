@@ -29,14 +29,27 @@ const getGoals = async token => {
 }
 
 // Get Goal by ID
-const getGoalById = async (id, token) => {
+const getGoalById = async (goalId, token) => {
 	const config = {
 		headers: {
 			Authorization: `Bearer ${token}`,
 		},
 	}
 
-	const response = await axios.get(GOALS_API + id, config)
+	const response = await axios.get(GOALS_API + goalId, config)
+
+	return response.data
+}
+
+// Update Goal by ID
+const updateGoal = async (goalId, goalData, token) => {
+	const config = {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	}
+
+	const response = await axios.put(GOALS_API + goalId, goalData, config)
 
 	return response.data
 }
@@ -45,6 +58,7 @@ const goalService = {
 	createGoal,
 	getGoals,
 	getGoalById,
+	updateGoal,
 }
 
 export default goalService
