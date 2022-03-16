@@ -32,8 +32,10 @@ const Register = () => {
 			navigate('/')
 		}
 
-		dispatch(reset())
-		dispatch(resetUser())
+		return () => {
+			dispatch(reset())
+			dispatch(resetUser())
+		}
 	}, [user, isError, isSuccess, message, navigate, dispatch])
 
 	// form control

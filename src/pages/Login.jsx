@@ -29,8 +29,10 @@ const Login = () => {
 			navigate('/')
 		}
 
-		dispatch(reset())
-		dispatch(resetUser())
+		return () => {
+			dispatch(reset())
+			dispatch(resetUser())
+		}
 	}, [user, isError, isSuccess, message, navigate, dispatch])
 
 	const onChange = e => {
