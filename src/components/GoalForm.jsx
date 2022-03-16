@@ -28,7 +28,7 @@ const GoalForm = () => {
 				<form onSubmit={onSubmit}>
 					<div className='form-group'>
 						<label htmlFor='text'>Goal</label>
-						<input type='text' name='text' id='text' value={text} onChange={onChange} />
+						<input type='text' name='text' id='text' value={text} onChange={onChange} required />
 					</div>
 					<div className='form-group'>
 						<button className='btn btn-block' type='submit'>
