@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { FaUser } from 'react-icons/fa'
 import { reset, register } from '../features/auth/authSlice'
+import { reset as resetUser } from '../features/users/userSlice'
 import Spinner from '../components/Spinner'
 
 const Register = () => {
@@ -32,14 +33,18 @@ const Register = () => {
 		}
 
 		dispatch(reset())
+		dispatch(resetUser())
 	}, [user, isError, isSuccess, message, navigate, dispatch])
 
+	// form control
 	const onChange = e => {
 		setFormData(prevState => ({
 			...prevState,
 			[e.target.name]: e.target.value,
 		}))
 	}
+
+	// submit form.
 	const onSubmit = e => {
 		e.preventDefault()
 
