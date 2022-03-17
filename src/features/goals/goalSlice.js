@@ -8,6 +8,7 @@ const initialState = {
 	isError: false,
 	isSuccess: false,
 	isLoading: false,
+	isGoalUpdated: false,
 	message: '',
 }
 
@@ -54,21 +55,18 @@ export const getGoalById = createAsyncThunk('goals/getGoalById', async (goalId, 
 })
 
 // Update Goal
-export const updateGoal = createAsyncThunk(
-	'goals/updateGoal',
-	async (goalId, goalData, thunkAPI) => {
-		try {
-			const token = thunkAPI.getState().auth.token
-			return await goalService.updateGoal(goalId, goalData, token)
-		} catch (error) {
-			const message =
-				(error.response && error.response.data && error.response.data.message) ||
-				error.message ||
-				error.toString()
-			return thunkAPI.rejectWithValue(message)
-		}
+export const updateGoal = createAsyncThunk('goals/updateGoal', async (goalData, thunkAPI) => {
+	try {
+		const token = thunkAPI.getState().auth.token
+		return await goalService.updateGoal(goalData, token)
+	} catch (error) {
+		const message =
+			(error.response && error.response.data && error.response.data.message) ||
+			error.message ||
+			error.toString()
+		return thunkAPI.rejectWithValue(message)
 	}
-)
+})
 
 // Delete Goal
 export const deleteGoal = createAsyncThunk('goals/delete', async (goalId, thunkAPI) => {
@@ -86,7 +84,7 @@ export const deleteGoal = createAsyncThunk('goals/delete', async (goalId, thunkA
 
 // Goal Slice
 export const goalSlice = createSlice({
-	name: 'goal',
+	name: 'goals',
 	initialState,
 	reducers: {
 		reset: state => initialState,
@@ -158,10 +156,10 @@ export const goalSlice = createSlice({
 			.addCase(updateGoal.fulfilled, (state, action) => {
 				const { updatedGoal, message } = action.payload
 				state.isLoading = false
-				state.isSuccess = true
+				state.isGoalUpdated = true
 				state.message = message
 				state.goals = state.goals.map(goal =>
-					goal.id === updatedGoal._id ? { ...updatedGoal } : goal
+					goal._id === updatedGoal._id ? { ...updatedGoal } : goal
 				)
 			})
 			// Update Goal by ID extras || Rejected
