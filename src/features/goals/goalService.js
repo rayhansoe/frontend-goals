@@ -42,14 +42,14 @@ const getGoalById = async (goalId, token) => {
 }
 
 // Update Goal by ID
-const updateGoal = async (goalId, goalData, token) => {
+const updateGoal = async (goalData, token) => {
 	const config = {
 		headers: {
 			Authorization: `Bearer ${token}`,
 		},
 	}
 
-	const response = await axios.put(GOALS_API + goalId, goalData, config)
+	const response = await axios.put(GOALS_API + goalData.id, goalData, config)
 
 	return response.data
 }
