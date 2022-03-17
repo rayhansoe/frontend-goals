@@ -45,7 +45,7 @@ const Profile = () => {
 		dispatch(getUserProfile(username))
 
 		return () => {
-			dispatch(reset)
+			dispatch(reset())
 		}
 	}, [dispatch, isError, message, navigate, username])
 
