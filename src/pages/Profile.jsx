@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Spinner from '../components/Spinner'
 import { reset, userProfile as getUserProfile } from '../features/users/userSlice'
+import EditProfile from '../components/EditProfile'
 
 const Profile = () => {
 	const { username } = useParams()
@@ -13,6 +14,28 @@ const Profile = () => {
 
 	const { user } = useSelector(state => state.auth)
 	const { userProfile, isError, isLoading, message } = useSelector(state => state.users)
+
+	const UserProfile = () =>
+		userProfile ? (
+			<p>{`@${userProfile.username}`}</p>
+		) : (
+			<>
+				<h1>Sorry, this page isn't available.</h1>
+				<p>
+					The link you followed may be broken, or the page may have been removed.{' '}
+					<Link to={'/'}>Go back to Home.</Link>
+				</p>
+			</>
+		)
+
+	const EditProfileWrapper = () =>
+		user && userProfile && user._id === userProfile.id ? (
+			<>
+				<EditProfile userProfile={userProfile} />
+			</>
+		) : (
+			<></>
+		)
 
 	useEffect(() => {
 		if (isError) {
@@ -32,19 +55,9 @@ const Profile = () => {
 
 	return (
 		<>
-			{userProfile ? (
-				<p>{`@${userProfile.username}`}</p>
-			) : (
-				<>
-					<h1>Sorry, this page isn't available.</h1>
-					<p>
-						The link you followed may be broken, or the page may have been removed.{' '}
-						<Link to={'/'}>Go back to Home.</Link>
-					</p>
-				</>
-			)}
+			<UserProfile />
 			<h1>{userProfile && userProfile.name}</h1>
-			{/* <p>{user._id === userProfile.id && <Link to={'/'}>Edit Profile</Link>}</p> */}
+			<EditProfileWrapper />
 		</>
 	)
 }
