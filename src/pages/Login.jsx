@@ -31,7 +31,6 @@ const Login = () => {
 
 		return () => {
 			dispatch(reset())
-			dispatch(resetUser())
 		}
 	}, [user, isError, isSuccess, message, navigate, dispatch])
 
