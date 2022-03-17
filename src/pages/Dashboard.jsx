@@ -7,6 +7,7 @@ import { getGoals, reset } from '../features/goals/goalSlice'
 import { reset as resetUser } from '../features/users/userSlice'
 import Spinner from '../components/Spinner'
 import GoalForm from '../components/GoalForm'
+import GoalItem from '../components/GoalItem'
 
 const Dashboard = () => {
 	// global state
@@ -34,8 +35,6 @@ const Dashboard = () => {
 			dispatch(getGoals())
 		}
 
-		// reset data user global state
-		dispatch(resetUser())
 		return () => {
 			// reset data goals global state
 			dispatch(reset())
@@ -46,6 +45,18 @@ const Dashboard = () => {
 	if (isLoading) {
 		return <Spinner />
 	}
+
+	const GoalList = goals.map(goal => <GoalItem key={goal._id} goal={goal} />)
+
+	const Goal = () => (
+		<section className='content'>
+			{goals.length ? (
+				<div className='goals'>{GoalList}</div>
+			) : (
+				<h3>You have not set any goals.</h3>
+			)}
+		</section>
+	)
 
 	return (
 		<>
@@ -60,6 +71,8 @@ const Dashboard = () => {
 					</section>
 
 					<GoalForm />
+
+					<Goal />
 				</>
 			)}
 		</>
