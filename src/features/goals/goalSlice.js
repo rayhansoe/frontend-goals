@@ -40,10 +40,10 @@ export const getGoals = createAsyncThunk('goals/getAll', async (_, thunkAPI) => 
 })
 
 // Get Goal by ID
-export const getGoalById = createAsyncThunk('goals/getGoalById', async (id, thunkAPI) => {
+export const getGoalById = createAsyncThunk('goals/getGoalById', async (goalId, thunkAPI) => {
 	try {
 		const token = thunkAPI.getState().auth.token
-		return await goalService.getGoalById(id, token)
+		return await goalService.getGoalById(goalId, token)
 	} catch (error) {
 		const message =
 			(error.response && error.response.data && error.response.data.message) ||
@@ -70,6 +70,20 @@ export const updateGoal = createAsyncThunk(
 	}
 )
 
+// Delete Goal
+export const deleteGoal = createAsyncThunk('goals/delete', async (goalId, thunkAPI) => {
+	try {
+		const token = thunkAPI.getState().auth.token
+		return await goalService.deleteGoal(goalId, token)
+	} catch (error) {
+		const message =
+			(error.response && error.response.data && error.response.data.message) ||
+			error.message ||
+			error.toString()
+		return thunkAPI.rejectWithValue(message)
+	}
+})
+
 // Goal Slice
 export const goalSlice = createSlice({
 	name: 'goal',
@@ -89,7 +103,7 @@ export const goalSlice = createSlice({
 			.addCase(createGoal.fulfilled, (state, action) => {
 				state.isLoading = false
 				state.isSuccess = true
-				state.goals.push(action.payload)
+				state.goals.push(action.payload.goal)
 			})
 			// Create Goal extras || Rejected
 			.addCase(createGoal.rejected, (state, action) => {
@@ -119,17 +133,17 @@ export const goalSlice = createSlice({
 			//
 			// Get Goal by ID
 			// Get Goal by ID extras || Pending
-			.addCase(getGoals.pending, state => {
+			.addCase(getGoalById.pending, state => {
 				state.isLoading = true
 			})
 			// Get Goal by ID extras || Success
-			.addCase(getGoals.fulfilled, (state, action) => {
+			.addCase(getGoalById.fulfilled, (state, action) => {
 				state.isLoading = false
 				state.isSuccess = true
 				state.goal = action.payload
 			})
 			// Get Goal by ID extras || Rejected
-			.addCase(getGoals.rejected, (state, action) => {
+			.addCase(getGoalById.rejected, (state, action) => {
 				state.isLoading = false
 				state.isError = true
 				state.message = action.payload
@@ -137,21 +151,21 @@ export const goalSlice = createSlice({
 			//
 			// Update Goal
 			// Update Goal by ID extras || Pending
-			.addCase(getGoals.pending, state => {
+			.addCase(updateGoal.pending, state => {
 				state.isLoading = true
 			})
 			// Update Goal by ID extras || Success
-			.addCase(getGoals.fulfilled, (state, action) => {
+			.addCase(updateGoal.fulfilled, (state, action) => {
 				const { updatedGoal, message } = action.payload
 				state.isLoading = false
 				state.isSuccess = true
 				state.message = message
 				state.goals = state.goals.map(goal =>
-					goal.id === updatedGoal.id ? { ...updatedGoal } : goal
+					goal.id === updatedGoal._id ? { ...updatedGoal } : goal
 				)
 			})
 			// Update Goal by ID extras || Rejected
-			.addCase(getGoals.rejected, (state, action) => {
+			.addCase(updateGoal.rejected, (state, action) => {
 				state.isLoading = false
 				state.isError = true
 				state.message = action.payload
@@ -159,19 +173,19 @@ export const goalSlice = createSlice({
 			//
 			// Delete Goal
 			// Delete Goal by ID extras || Pending
-			.addCase(getGoals.pending, state => {
+			.addCase(deleteGoal.pending, state => {
 				state.isLoading = true
 			})
 			// Delete Goal by ID extras || Success
-			.addCase(getGoals.fulfilled, (state, action) => {
+			.addCase(deleteGoal.fulfilled, (state, action) => {
 				const { id, message } = action.payload
 				state.isLoading = false
 				state.isSuccess = true
 				state.message = message
-				state.goals = state.goals.filter(goal => goal.id !== id)
+				state.goals = state.goals.filter(goal => goal._id !== id)
 			})
 			// Delete Goal by ID extras || Rejected
-			.addCase(getGoals.rejected, (state, action) => {
+			.addCase(deleteGoal.rejected, (state, action) => {
 				state.isLoading = false
 				state.isError = true
 				state.message = action.payload
