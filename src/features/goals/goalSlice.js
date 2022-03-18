@@ -8,7 +8,9 @@ const initialState = {
 	isError: false,
 	isSuccess: false,
 	isLoading: false,
-	isGoalUpdated: false,
+	isUpdated: false,
+	isDeleted: false,
+	isCreated: false,
 	message: '',
 }
 
@@ -99,9 +101,12 @@ export const goalSlice = createSlice({
 			})
 			// Create Goal extras || Success
 			.addCase(createGoal.fulfilled, (state, action) => {
+				const { goal, message } = action.payload
 				state.isLoading = false
 				state.isSuccess = true
-				state.goals.push(action.payload.goal)
+				state.isCreated = true
+				state.message = message
+				state.goals.push(goal)
 			})
 			// Create Goal extras || Rejected
 			.addCase(createGoal.rejected, (state, action) => {
@@ -156,7 +161,7 @@ export const goalSlice = createSlice({
 			.addCase(updateGoal.fulfilled, (state, action) => {
 				const { updatedGoal, message } = action.payload
 				state.isLoading = false
-				state.isGoalUpdated = true
+				state.isUpdated = true
 				state.message = message
 				state.goals = state.goals.map(goal =>
 					goal._id === updatedGoal._id ? { ...updatedGoal } : goal
@@ -179,6 +184,7 @@ export const goalSlice = createSlice({
 				const { id, message } = action.payload
 				state.isLoading = false
 				state.isSuccess = true
+				state.isDeleted = true
 				state.message = message
 				state.goals = state.goals.filter(goal => goal._id !== id)
 			})
