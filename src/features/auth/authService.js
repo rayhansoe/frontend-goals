@@ -22,7 +22,7 @@ const login = async userData => {
 	if (response.data) {
 		const { token, userProfile } = response.data
 		localStorage.setItem('token', JSON.stringify(token))
-		localStorage.setItem('user', JSON.stringify({ userProfile }))
+		localStorage.setItem('user', JSON.stringify(userProfile))
 	}
 
 	return response.data
