@@ -11,7 +11,9 @@ import GoalItem from '../components/GoalItem'
 const Dashboard = () => {
 	// global state
 	const { user } = useSelector(state => state.auth)
-	const { goals, isError, isLoading, message } = useSelector(state => state.goals)
+	const { goals, isError, isLoading, message, isDeleted, isSuccess, isCreated } = useSelector(
+		state => state.goals
+	)
 
 	// tools
 	const navigate = useNavigate()
@@ -29,6 +31,14 @@ const Dashboard = () => {
 			navigate('/login')
 		}
 
+		if (isDeleted) {
+			toast.warn(message)
+		}
+
+		if (isCreated) {
+			toast.success(message)
+		}
+
 		if (user) {
 			// fetch all Goals
 			dispatch(getGoals())
@@ -38,7 +48,7 @@ const Dashboard = () => {
 			// reset data goals global state
 			dispatch(reset())
 		}
-	}, [user, navigate, dispatch, isError, message])
+	}, [user, navigate, dispatch, isError, message, isDeleted, isCreated])
 
 	// If the fetching is pending
 	if (isLoading) {
@@ -57,24 +67,24 @@ const Dashboard = () => {
 		</section>
 	)
 
-	return (
-		<>
-			{user && (
-				<>
-					<p>Dashboard</p>
-					<section className='heading'>
-						<h1>
-							Welcome <Link to={`/${user && user.username}`}>{user && user.name}</Link>
-						</h1>
-						<p>Goals Dashboard</p>
-					</section>
+	if (user && isSuccess) {
+		return (
+			<>
+				<p>Dashboard</p>
+				<section className='heading'>
+					<h1>
+						Welcome <Link to={`/${user && user.username}`}>{user && user.name}</Link>
+					</h1>
+					<p>Goals Dashboard</p>
+				</section>
 
-					<GoalForm />
+				<GoalForm />
 
-					<Goal />
-				</>
-			)}
-		</>
-	)
+				<Goal />
+			</>
+		)
+	}
+
+	return <></>
 }
 export default Dashboard
