@@ -59,6 +59,8 @@ export const authSlice = createSlice({
 	},
 	extraReducers: builder => {
 		builder
+			//
+			// Register extras
 			// Register extras || Pending
 			.addCase(register.pending, state => {
 				state.isLoading = true
@@ -79,6 +81,8 @@ export const authSlice = createSlice({
 				state.user = null
 				state.token = null
 			})
+			//
+			// Login extras
 			// Login extras || Pending
 			.addCase(login.pending, state => {
 				state.isLoading = true
@@ -99,6 +103,8 @@ export const authSlice = createSlice({
 				state.user = null
 				state.token = null
 			})
+			//
+			// Logout
 			// Logout extra
 			.addCase(logout.fulfilled, state => {
 				state.token = null
