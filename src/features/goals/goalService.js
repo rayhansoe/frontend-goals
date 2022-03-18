@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // const BASE_URL = 'http://localhost:5000'
-const GOALS_API = '/api/goals/'
+const GOALS_API = 'https://backendgoalsapi.herokuapp.com/api/goals/'
 
 // Create Goal
 const createGoal = async (goalData, token) => {
