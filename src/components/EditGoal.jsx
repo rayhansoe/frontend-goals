@@ -11,7 +11,7 @@ const EditGoal = ({ goal }) => {
 
 	const { text } = formData
 
-	const { isGoalUpdated, isError, isLoading, message } = useSelector(state => state.goals)
+	const { isUpdated, isError, isLoading, message } = useSelector(state => state.goals)
 
 	const dispatch = useDispatch()
 
@@ -39,10 +39,10 @@ const EditGoal = ({ goal }) => {
 			toast.error(message)
 		}
 
-		if (isGoalUpdated) {
+		if (isUpdated) {
 			toast.success(message)
 		}
-	}, [isError, isGoalUpdated, message])
+	}, [isError, isUpdated, message])
 
 	if (isLoading) {
 		return <Spinner />
