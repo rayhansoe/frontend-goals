@@ -57,11 +57,15 @@ const Goal = () => {
 		return <Spinner />
 	}
 
-	return (
-		<>
-			<GoalDetail />
-			<EditGoalWrapper />
-		</>
-	)
+	if (user && goal && user._id === goal.user) {
+		return (
+			<>
+				<GoalDetail />
+				<EditGoalWrapper />
+			</>
+		)
+	}
+
+	return <></>
 }
 export default Goal
