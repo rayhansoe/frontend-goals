@@ -53,12 +53,16 @@ const Profile = () => {
 		return <Spinner />
 	}
 
-	return (
-		<>
-			<UserProfile />
-			<h1>{userProfile && userProfile.name}</h1>
-			<EditProfileWrapper />
-		</>
-	)
+	if (user && userProfile && user._id === userProfile.id) {
+		return (
+			<>
+				<UserProfile />
+				<h1>{userProfile && userProfile.name}</h1>
+				<EditProfileWrapper />
+			</>
+		)
+	}
+
+	return <></>
 }
 export default Profile
