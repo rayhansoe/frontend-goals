@@ -29,6 +29,7 @@ const login = async userData => {
 
 // Logout user
 const logout = () => {
+	localStorage.removeItem('token')
 	localStorage.removeItem('user')
 }
 
