@@ -7,6 +7,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Profile from './pages/Profile'
 import Goal from './pages/Goal'
+import NotFound from './pages/NotFound'
 
 function App() {
 	return (
@@ -15,6 +16,7 @@ function App() {
 				<div className='container'>
 					<Header />
 					<Routes>
+						<Route path='*' element={<NotFound />} />
 						<Route path='/' element={<Dashboard />} />
 						<Route path='/login' element={<Login />} />
 						<Route path='/register' element={<Register />} />
