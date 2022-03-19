@@ -2,6 +2,7 @@ import axios from 'axios'
 
 // const BASE_URL = 'http://localhost:5000'
 const USER_API = 'https://backendgoalsapi.herokuapp.com/api/users/'
+// const USER_API = '/api/users/'
 
 // Register user
 const register = async userData => {
@@ -29,9 +30,16 @@ const login = async userData => {
 }
 
 // Logout user
-const logout = () => {
+const logout = async token => {
+	const config = {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	}
 	localStorage.removeItem('token')
 	localStorage.removeItem('user')
+
+	await axios.delete(USER_API + 'logout', config)
 }
 
 const authService = {

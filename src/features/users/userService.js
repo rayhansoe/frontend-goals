@@ -2,6 +2,7 @@ import axios from 'axios'
 
 // const BASE_URL = 'http://localhost:5000'
 const USER_API = 'https://backendgoalsapi.herokuapp.com/api/users/'
+// const USER_API = '/api/users/'
 
 // Get User Profile || get user by username
 const userProfile = async (username, token) => {

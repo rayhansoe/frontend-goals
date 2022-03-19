@@ -53,7 +53,7 @@ const Profile = () => {
 		return <Spinner />
 	}
 
-	if (user && userProfile && user._id === userProfile.id) {
+	if (user || userProfile || user._id === userProfile.id) {
 		return (
 			<>
 				<UserProfile />
