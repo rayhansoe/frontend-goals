@@ -38,6 +38,7 @@ const Profile = () => {
 		)
 
 	useEffect(() => {
+		console.log('hehe')
 		if (isError) {
 			toast.error(message)
 		}
