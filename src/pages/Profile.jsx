@@ -38,7 +38,6 @@ const Profile = () => {
 		)
 
 	useEffect(() => {
-		console.log('hehe')
 		if (isError) {
 			toast.error(message)
 		}
@@ -54,7 +53,7 @@ const Profile = () => {
 		return <Spinner />
 	}
 
-	if (user || userProfile || JSON.stringify(user._id) === userProfile.id) {
+	if (user && userProfile && JSON.stringify(user._id) === userProfile.id) {
 		return (
 			<>
 				<UserProfile />
