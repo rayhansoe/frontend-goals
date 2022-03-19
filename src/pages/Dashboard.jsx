@@ -39,6 +39,10 @@ const Dashboard = () => {
 			toast.success(message)
 		}
 
+		if (!isLogged) {
+			navigate('/login')
+		}
+
 		if (user && isLogged) {
 			// fetch all Goals
 			dispatch(getGoals())
