@@ -66,6 +66,10 @@ const Goal = () => {
 		)
 	}
 
-	return <></>
+	return (
+		<>
+			<GoalDetail />
+		</>
+	)
 }
 export default Goal
