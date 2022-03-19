@@ -11,7 +11,7 @@ const Goal = () => {
 
 	const dispatch = useDispatch()
 
-	const { user } = useSelector(state => state.auth)
+	const { user, isLogged } = useSelector(state => state.auth)
 	const { goal, isError, isLoading, message } = useSelector(state => state.goals)
 
 	const GoalDetail = () =>
@@ -44,14 +44,14 @@ const Goal = () => {
 			toast.error(message)
 		}
 
-		if (user) {
+		if (user && isLogged) {
 			dispatch(getGoalById(goalId))
 		}
 
 		return () => {
 			dispatch(reset())
 		}
-	}, [dispatch, goalId, isError, message, user])
+	}, [dispatch, goalId, isError, isLogged, message, user])
 
 	if (isLoading) {
 		return <Spinner />

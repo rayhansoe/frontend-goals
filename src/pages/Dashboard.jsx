@@ -10,7 +10,7 @@ import GoalItem from '../components/GoalItem'
 
 const Dashboard = () => {
 	// global state
-	const { user } = useSelector(state => state.auth)
+	const { user, isLogged } = useSelector(state => state.auth)
 	const { goals, isError, isLoading, message, isDeleted, isSuccess, isCreated } = useSelector(
 		state => state.goals
 	)
@@ -39,7 +39,7 @@ const Dashboard = () => {
 			toast.success(message)
 		}
 
-		if (user) {
+		if (user && isLogged) {
 			// fetch all Goals
 			dispatch(getGoals())
 		}
@@ -48,7 +48,7 @@ const Dashboard = () => {
 			// reset data goals global state
 			dispatch(reset())
 		}
-	}, [user, navigate, dispatch, isError, message, isDeleted, isCreated])
+	}, [user, navigate, dispatch, isError, message, isDeleted, isCreated, isLogged])
 
 	// If the fetching is pending
 	if (isLoading) {

@@ -53,7 +53,7 @@ const Profile = () => {
 		return <Spinner />
 	}
 
-	if (user || userProfile || user._id === userProfile.id) {
+	if (user || userProfile || JSON.stringify(user._id) === userProfile.id) {
 		return (
 			<>
 				<UserProfile />
@@ -63,6 +63,11 @@ const Profile = () => {
 		)
 	}
 
-	return <></>
+	return (
+		<>
+			<UserProfile />
+			<h1>{userProfile && userProfile.name}</h1>
+		</>
+	)
 }
 export default Profile

@@ -11,6 +11,7 @@ const initialState = {
 	isError: false,
 	isSuccess: false,
 	isLoading: false,
+	isLogged: false,
 	message: '',
 }
 
@@ -72,6 +73,7 @@ export const authSlice = createSlice({
 				const { token, userProfile } = action.payload
 				state.isLoading = false
 				state.isSuccess = true
+				state.isLogged = true
 				state.token = token
 				state.user = userProfile
 			})
@@ -94,6 +96,7 @@ export const authSlice = createSlice({
 				const { token, userProfile } = action.payload
 				state.isLoading = false
 				state.isSuccess = true
+				state.isLogged = true
 				state.token = token
 				state.user = userProfile
 			})
@@ -111,6 +114,7 @@ export const authSlice = createSlice({
 			.addCase(logout.fulfilled, state => {
 				state.token = null
 				state.user = null
+				state.isLogged = false
 			})
 	},
 })
