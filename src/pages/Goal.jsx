@@ -11,7 +11,7 @@ const Goal = () => {
 
 	const dispatch = useDispatch()
 
-	const { user, isLogged } = useSelector(state => state.auth)
+	const { user } = useSelector(state => state.auth)
 	const { goal, isError, isLoading, message } = useSelector(state => state.goals)
 
 	const GoalDetail = () =>
@@ -40,18 +40,20 @@ const Goal = () => {
 		)
 
 	useEffect(() => {
+		// jika error
 		if (isError) {
 			toast.error(message)
 		}
 
-		if (user && isLogged) {
+		// jika sudah login
+		if (user) {
 			dispatch(getGoalById(goalId))
 		}
 
 		return () => {
 			dispatch(reset())
 		}
-	}, [dispatch, goalId, isError, isLogged, message, user])
+	}, [dispatch, goalId, isError, message, user])
 
 	if (isLoading) {
 		return <Spinner />
