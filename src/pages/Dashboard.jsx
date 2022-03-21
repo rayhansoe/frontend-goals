@@ -7,13 +7,13 @@ import { getGoals, reset } from '../features/goals/goalSlice'
 import Spinner from '../components/Spinner'
 import GoalForm from '../components/GoalForm'
 import GoalItem from '../components/GoalItem'
+import { rejected } from '../features/auth/authSlice'
 
 const Dashboard = () => {
 	// global state
-	const { user, isLogged } = useSelector(state => state.auth)
-	const { goals, isError, isLoading, message, isDeleted, isSuccess, isCreated } = useSelector(
-		state => state.goals
-	)
+	const { user } = useSelector(state => state.auth)
+	const { goals, isError, isLoading, message, isDeleted, isSuccess, isCreated, isRejected } =
+		useSelector(state => state.goals)
 
 	// tools
 	const navigate = useNavigate()
@@ -21,6 +21,12 @@ const Dashboard = () => {
 
 	// useEffect
 	useEffect(() => {
+		// Jika gagal fetching data
+		if (isError && isRejected) {
+			toast.error(message)
+			dispatch(rejected())
+			dispatch(reset())
+		}
 		// Jika gagal fetching data
 		if (isError) {
 			toast.error(message)
@@ -31,19 +37,18 @@ const Dashboard = () => {
 			navigate('/login')
 		}
 
+		// Jika goal delete
 		if (isDeleted) {
 			toast.warn(message)
 		}
 
+		// Jika goal created
 		if (isCreated) {
 			toast.success(message)
 		}
 
-		if (!isLogged) {
-			navigate('/login')
-		}
-
-		if (user && isLogged) {
+		// Jika udh login
+		if (user) {
 			// fetch all Goals
 			dispatch(getGoals())
 		}
@@ -52,7 +57,7 @@ const Dashboard = () => {
 			// reset data goals global state
 			dispatch(reset())
 		}
-	}, [user, navigate, dispatch, isError, message, isDeleted, isCreated, isLogged])
+	}, [user, navigate, dispatch, isError, message, isDeleted, isCreated, isRejected])
 
 	// If the fetching is pending
 	if (isLoading) {
