@@ -11,6 +11,7 @@ const initialState = {
 	isUpdated: false,
 	isDeleted: false,
 	isCreated: false,
+	isRejected: false,
 	message: '',
 }
 
@@ -131,6 +132,9 @@ export const goalSlice = createSlice({
 				state.isLoading = false
 				state.isError = true
 				state.message = action.payload
+				state.isRejected = true
+				localStorage.removeItem('token')
+				localStorage.removeItem('user')
 				console.log(action.payload)
 			})
 			//
