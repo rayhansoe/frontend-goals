@@ -59,6 +59,10 @@ export const authSlice = createSlice({
 			state.message = ''
 		},
 		hardReset: state => initialState,
+		rejected: state => {
+			state.user = null
+			state.token = null
+		},
 	},
 	extraReducers: builder => {
 		builder
@@ -119,5 +123,5 @@ export const authSlice = createSlice({
 	},
 })
 
-export const { reset, hardReset } = authSlice.actions
+export const { reset, rejected, hardReset } = authSlice.actions
 export default authSlice.reducer
