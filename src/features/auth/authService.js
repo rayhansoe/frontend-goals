@@ -31,15 +31,15 @@ const login = async userData => {
 
 // Logout user
 const logout = async token => {
-	const config = {
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	}
+	// const config = {
+	// 	headers: {
+	// 		Authorization: `Bearer ${token}`,
+	// 	},
+	// }
 	localStorage.removeItem('token')
 	localStorage.removeItem('user')
 
-	await axios.delete(USER_API + 'logout', config)
+	// await axios.delete(USER_API + 'logout', config)
 }
 
 const authService = {
