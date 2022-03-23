@@ -28,7 +28,7 @@ const Dashboard = () => {
 			dispatch(reset())
 		}
 		// Jika gagal fetching data
-		if (isError) {
+		if (isError && !isRejected) {
 			toast.error(message)
 		}
 
